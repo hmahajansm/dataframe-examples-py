@@ -4,25 +4,26 @@ import os.path
 import yaml
 
 if __name__ == '__main__':
-
+    # org.apache.hadoop:hadoop-aws:2.7.4 this library is used to write data from s3 bucket or
+    # aws swervices, it adds packages to the pyspark shell
     os.environ["PYSPARK_SUBMIT_ARGS"] = (
         '--packages "org.apache.hadoop:hadoop-aws:2.7.4" pyspark-shell'
     )
 
-    # Create the SparkSession
+    # Create the SparkSession(very important this command- spark session is used to create the dataframes)
     spark = SparkSession \
         .builder \
         .appName("RDD examples") \
         .master('local[*]') \
         .getOrCreate()
     spark.sparkContext.setLogLevel('ERROR')
-
+# __file__ will use means current files path
     current_dir = os.path.abspath(os.path.dirname(__file__))
     app_config_path = os.path.abspath(current_dir + "/../" + "application.yml")
     app_secrets_path = os.path.abspath(current_dir + "/../" + ".secrets")
 
     conf = open(app_config_path)
-    app_conf = yaml.load(conf, Loader=yaml.FullLoader)
+    app_conf = yaml.load(conf, Loader=yaml.FullLoader) # this app_conf is a dictionary creating all key value pairs
     secret = open(app_secrets_path)
     app_secret = yaml.load(secret, Loader=yaml.FullLoader)
 
