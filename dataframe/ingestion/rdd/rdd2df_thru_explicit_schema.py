@@ -62,6 +62,7 @@ if __name__ == '__main__':
 
     print("# of records = " + str(txn_fct_df.count()))
     print("# of merchants = " + str(txn_fct_df.select(txn_fct_df["merchant_id"]).distinct().count()))
+    print("# of current partitions : ", txn_fct_df.rdd.getNumPartitions())
 
     txnAggDf = txn_fct_df \
         .repartition(10, txn_fct_df["merchant_id"]) \
